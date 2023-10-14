@@ -22,8 +22,18 @@ class TopTab:
         col0x: DeltaGenerator
         col10x: DeltaGenerator
         col00, col11x, col0x, col10x = st.columns([1.85, 1.75, 1.75, 3.5])
+        logo: str = (
+            "https://sflplus.info/sflplus.png"
+            if self.main.network == "mainnet"
+            else "https://sflplus.info/sflplus_testnet.png"
+        )
+        website: str = (
+            "https://sflplus.info"
+            if self.main.network == "mainnet"
+            else "https://testnet.sflplus.info"
+        )
         col00.markdown(
-            "[![Foo](https://sflplus.info/sflplus.png)](https://sflplus.info)"
+            f"[![Foo]({logo})]({website})"
             + '<span style="vertical-align:bottom;color:rgb(0, 221, 66);'
             + f'font-weight:bold;">{main.version}</span>',
             unsafe_allow_html=True,

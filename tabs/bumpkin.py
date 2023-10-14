@@ -64,7 +64,11 @@ class BumpkinTab:
                 )
                 sys.exit()  # Stop execution if the ID is invalid
 
-            url = "https://api.sunflower-land.com/community/getBumpkins"
+            url: str = (
+                "https://api.sunflower-land.com/community/getBumpkins"
+                if self.main.network == "mainnet"
+                else "https://api-dev.sunflower-land.com/community/getBumpkins"
+            )
             payload: str = json.dumps({"ids": [text_search_value]})
             headers: dict[str, str] = {"Content-Type": "application/json"}
             try:
@@ -144,11 +148,15 @@ class BumpkinTab:
                 extra_xp2 = "N/A"
             else:
                 if current_lvl2 in self.main.xp_dict:
-                    level_info2 = self.main.xp_dict[current_lvl2]
-                    xp_needed2 = float(level_info2["XP_next"] - (
-                        bump_xp2 - level_info2["Total XP"])
+                    level_info2: dict[str, int | None] = self.main.xp_dict[
+                        current_lvl2
+                    ]
+                    xp_needed2 = float(
+                        level_info2["XP_next"]
+                        - (bump_xp2 - level_info2["Total XP"])
                     )
-                    nextlvl_xp2 = level_info2["XP_next"]
+                    nextlvl_xp2: str | int | None = level_info2["XP_next"]
+                    assert isinstance(nextlvl_xp2, int)
                     extra_xp2 = float(nextlvl_xp2 - xp_needed2)
                 else:
                     xp_needed2 = "N/A"

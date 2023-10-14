@@ -77,7 +77,11 @@ class HomeTab:
 
         app_state: dict[str, list[str]] = st.experimental_get_query_params()
         app_state["farm"] = [self.farm_id]
-        url: str = f"https://api.sunflower-land.com/visit/{self.farm_id}"
+        url: str = (
+            f"https://api.sunflower-land.com/visit/{self.farm_id}"
+            if self.main.network == "mainnet"
+            else f"https://api-dev.sunflower-land.com/visit/{self.farm_id}"
+        )
         st.experimental_set_query_params(**app_state)
 
         response: requests.Response = requests.get(url)

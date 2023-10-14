@@ -18,6 +18,11 @@ class RankingTab:
     def __init__(self, main, tab: DeltaGenerator) -> None:
         self.main: Main = main
         self.rt_cons: dict[str, DeltaGenerator] = {}
+        if self.main.network == "testnet":
+            tab.columns([2, 2, 1.5])[0].info(
+                " ❌ Rankings are disabled on testnet ❌ "
+            )
+            return
         self.create_tab(tab)
 
     def create_tab(self, tab: DeltaGenerator) -> None:

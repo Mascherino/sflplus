@@ -1,6 +1,7 @@
 import asyncio
 import json
 from typing import Any
+import os
 
 import aiohttp
 import streamlit as st
@@ -15,9 +16,12 @@ from tabs.top import TopTab
 
 # if TYPE_CHECKING:
 #     from pandas import Series
+network: str = os.environ.get("SFLPLUS_NETWORK", "mainnet")
+if network not in ["mainnet", "testnet"]:
+    raise Exception(f"Network {network} not supported")
 favicon: Any = Image.open("favicon.png")
 st.set_page_config(
-    page_title="SFL Plus",
+    page_title="SFL Plus" if network == "mainnet" else "SFL Plus Testnet",
     page_icon=favicon,
     layout="wide",
     initial_sidebar_state="expanded",
@@ -49,6 +53,7 @@ class Main:
         app_state_temp: dict[
             str, list[str]
         ] = st.experimental_get_query_params()
+        self.network = network
 
         # fetch the first item in each query string as we don't have multiple
         # values for each query string key in this example
